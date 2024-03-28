@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-export const greetAction = createAction(
-  '[App] Set Welcome Greeting',
+export const setTitleAction = createAction(
+  '[Dashboard] Set new title',
   props<{ title: string }>()
 );
