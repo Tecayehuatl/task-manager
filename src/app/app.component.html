@@ -4,18 +4,18 @@
   {{ boardItems | json }}
 </pre>
 <div class="container">
-  <div class="row board" cdkDropListGroup>
+  <div class="row" cdkDropListGroup>
     @for(boardName of boardNames; track boardName) {
       <div
-        class="column"
+        class="col"
         cdkDropList
         [cdkDropListData]="boardItems[boardName].data"
         (cdkDropListDropped)="dropTask($event)"
       >
-        <h3>Column {{ boardName }}</h3>
-        <ul>
+        <h3>{{ boardName | uppercase }}</h3>
+        <ul class="list">
           @for(info of boardItems[boardName].data; track info) {
-            <li cdkDrag>
+            <li class="task-item" cdkDrag>
               {{ info }}
             </li>
           }
