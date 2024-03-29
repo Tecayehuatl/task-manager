@@ -1,1 +1,24 @@
-<p>dashboard works!</p>
+<!-- <pre>
+  {{ boardItems | json }}
+</pre> -->
+<div class="container">
+  <div class="row" cdkDropListGroup>
+    @for(boardName of boardNames; track boardName) {
+      <div
+        class="col"
+        cdkDropList
+        [cdkDropListData]="boardItems[boardName].data"
+        (cdkDropListDropped)="dragDropTask($event)"
+      >
+        <h3>{{ boardName | uppercase }}</h3>
+        <ul class="list">
+          @for(info of boardItems[boardName].data; track info) {
+            <li class="task-item" cdkDrag>
+              {{ info }}
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</div>

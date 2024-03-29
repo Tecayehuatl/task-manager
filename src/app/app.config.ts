@@ -6,6 +6,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
 import { dashboardKey, dashboardReducer } from './store/reducers/dashboard.reducer';
 import { appReducer } from './store/reducers/app.reducer';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appKey = 'AppState';
 
@@ -14,6 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideStore({ [dashboardKey]: dashboardReducer }),
     provideState({ name: appKey, reducer: appReducer }),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), provideAnimationsAsync(),
   ],
 };

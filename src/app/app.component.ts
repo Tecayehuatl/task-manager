@@ -2,77 +2,56 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { appNameSelector } from './store/selectors/app.selectors';
-import { greetAction } from './store/actions/app.actions';
-
-interface BoardItem {
-  type: string;
-  data: number[];
+interface MenuItem {
+  path: string;
+  icon: string;
+  text: string;
 }
-
-interface BoardItems {
-  [key: string]: BoardItem;
-}
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, DragDropModule],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatToolbarModule
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'task-manager';
-  title$: any;
-  boardNames!: string[];
+  isExpanded = false;
 
-  boardItems: BoardItems = {
-    backlog: {
-      type: 'backlog',
-      data: [1,1,3],
+  menuItems: MenuItem[] = [
+    {
+      path: '',
+      icon: 'assignment',
+      text: 'Platform Lunch',
     },
-    todo: {
-      type: 'todo',
-      data: [2,2,3],
+    {
+      path: '',
+      icon: 'assignment',
+      text: 'Marketin Plan',
     },
-    done: {
-      type: 'done',
-      data: [3,3,3],
+    {
+      path: '',
+      icon: 'assignment',
+      text: 'Roadmap',
     },
-    inReview: {
-      type: 'inReview',
-      data: [4,4,3],
+    {
+      path: '',
+      icon: 'add',
+      text: 'Create New Board',
     },
-  };
+  ];
 
   constructor(private store: Store) {
-    this.title$ = this.store.select(appNameSelector);
-
-    setTimeout(() => {
-      this.store.dispatch(greetAction({ title: 'Nuevo título' }));
-    }, 3000);
-    this.boardNames = this.getBoardNames();
-  }
-
-  getBoardNames(): string[] {
-    let names: string[] = [];
-    Object.keys(this.boardItems).forEach((board)=> {
-      names = [...names, this.boardItems[board].type]
-    })
-    return names;
-  }
-
-  dropTask(event: any): void {
-    console.log('event', event);
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
-    }
   }
 }
