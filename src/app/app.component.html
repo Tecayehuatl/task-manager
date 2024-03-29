@@ -1,2 +1,26 @@
 <h1>{{ title$ | async }}</h1>
 <router-outlet />
+<pre>
+  {{ boardItems | json }}
+</pre>
+<div class="container">
+  <div class="row board" cdkDropListGroup>
+    @for(boardName of boardNames; track boardName) {
+      <div
+        class="column"
+        cdkDropList
+        [cdkDropListData]="boardItems[boardName].data"
+        (cdkDropListDropped)="dropTask($event)"
+      >
+        <h3>Column {{ boardName }}</h3>
+        <ul>
+          @for(info of boardItems[boardName].data; track info) {
+            <li cdkDrag>
+              {{ info }}
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</div>
