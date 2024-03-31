@@ -20,12 +20,14 @@
         }
       </mat-nav-list>
       <div>
+        <div class="theme">
+          <mat-icon>light_mode</mat-icon>
+          <mat-slide-toggle (change)="toggleTheme($event)"></mat-slide-toggle>
+          <mat-icon>dark_mode</mat-icon>
+        </div>
         <button mat-mini-fab (click)="isExpanded = !isExpanded" style="margin: 10px;">
           <mat-icon aria-label="Menu">menu</mat-icon>
         </button>
-        <div>
-          <mat-slide-toggle (change)="toggleTheme($event)">Switch mode</mat-slide-toggle>
-        </div>
       </div>
     </div>
   </mat-sidenav>

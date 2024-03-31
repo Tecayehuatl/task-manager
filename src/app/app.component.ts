@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
-import { OverlayModule } from '@angular/cdk/overlay';
+import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 interface MenuItem {
   path: string;
@@ -25,7 +25,8 @@ interface MenuItem {
     MatListModule,
     MatToolbarModule,
     MatSlideToggleModule,
-    MatButtonModule
+    MatButtonModule,
+    OverlayModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -56,10 +57,20 @@ export class AppComponent {
     },
   ];
 
-  constructor(private overlay: OverlayModule) {
+  @HostBinding('class') className = '';
+  darkClass= 'theme-dark';
+  lightClass= 'theme-light';
+
+  constructor(private overlay: OverlayContainer) {
   }
 
-  toggleTheme(event: any): void {
-    console.log('event ', event);
+  toggleTheme(event: MatSlideToggleChange): void {
+    this.className = event.checked ? this.darkClass : this.lightClass;
+
+    if(event.checked) {
+      this.overlay.getContainerElement().classList.add(this.className);
+    } else {
+      this.overlay.getContainerElement().classList.remove(this.className);
+    }
   }
 }
