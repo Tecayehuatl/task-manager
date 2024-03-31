@@ -1,24 +1,29 @@
-<!-- <pre>
-  {{ boardItems | json }}
-</pre> -->
 <div class="container">
   <div class="row" cdkDropListGroup>
     @for(boardName of boardNames; track boardName) {
-      <div
+      <mat-card
         class="col"
         cdkDropList
         [cdkDropListData]="boardItems[boardName].data"
         (cdkDropListDropped)="dragDropTask($event)"
       >
-        <h3>{{ boardName | uppercase }}</h3>
-        <ul class="list">
+        <mat-card-header>
+          <mat-card-title>
+            <div class="card-title">
+              <span class="card-title__circle" [style.background-color]="boardItems[boardName].color"></span>
+              {{ boardItems[boardName].name | uppercase }}
+              ({{ boardItems[boardName].data.length }})
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="task-list">
           @for(info of boardItems[boardName].data; track info) {
-            <li class="task-item" cdkDrag>
-              {{ info }}
-            </li>
+            <div class="task-item" cdkDrag>
+              <app-task-item [task]="info"></app-task-item>
+            </div>
           }
-        </ul>
-      </div>
+        </mat-card-content>
+      </mat-card>
     }
   </div>
 </div>

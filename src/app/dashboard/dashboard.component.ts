@@ -5,10 +5,29 @@ import { Store } from '@ngrx/store';
 import { appNameSelector } from '../store/selectors/app.selectors';
 import { greetAction } from '../store/actions/app.actions';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { TaskItemComponent } from '../shared/task-item/task-item.component';
+
+enum TaskStatus {
+  BACKLOG,
+  TODO,
+  DONE,
+  INREVIEW,
+}
+
+export interface Task {
+  description: string;
+  title: string;
+  status: TaskStatus;
+  subtask: Task[];
+}
 
 interface BoardItem {
+  color: string;
+  data: Task[];
+  name: string;
   type: string;
-  data: number[];
 }
 
 interface BoardItems {
@@ -18,7 +37,14 @@ interface BoardItems {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterModule, DragDropModule, CommonModule],
+  imports: [
+    RouterModule,
+    DragDropModule,
+    CommonModule,
+    MatCardModule,
+    MatDividerModule,
+    TaskItemComponent
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -27,22 +53,50 @@ export class DashboardComponent {
   title$: any;
   boardNames!: string[];
 
+  private initialTask: Task = {
+    title: '',
+    description: '',
+    status: TaskStatus.TODO,
+    subtask: [],
+  };
+
   boardItems: BoardItems = {
     backlog: {
+      color: '#6b5ed6',
       type: 'backlog',
-      data: [1, 1, 3],
+      name: 'Backlog',
+      data: [
+        {
+          title: 'My first task',
+          description: 'Short Description',
+          status: TaskStatus.TODO,
+          subtask: [],
+        },
+        {
+          title: 'My first task',
+          description: 'Short Description',
+          status: TaskStatus.TODO,
+          subtask: [],
+        }
+      ],
     },
     todo: {
+      color: '#60c48c',
       type: 'todo',
-      data: [2, 2, 3],
+      name: 'ToDo',
+      data: [],
     },
     done: {
+      color: '#df2b7d',
       type: 'done',
-      data: [3, 3, 3],
+      name: 'Done',
+      data: [],
     },
     inReview: {
+      color: '#2359ba',
       type: 'inReview',
-      data: [4, 4, 3],
+      name: 'In-Review',
+      data: [],
     },
   };
 
