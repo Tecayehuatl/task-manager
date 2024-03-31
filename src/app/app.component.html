@@ -1,7 +1,7 @@
 <mat-sidenav-container class="mat-sidenav-container" autosize>
-  <mat-sidenav #drawer mode="side" opened>
-    <div class="mat-sidenav-side">
-      <mat-nav-list [class.mat-nav-list]="isExpanded">
+  <mat-sidenav mode="side" opened>
+    <div class="mat-sidenav-side" [class.mat-sidenav-side--show]="isExpanded">
+      <mat-nav-list>
         @for(menuItem of menuItems; track menuItem) {
           <mat-list-item>
             <mat-icon
@@ -9,32 +9,45 @@
             >
               {{ menuItem.icon }}
             </mat-icon>
-            <p
-              class="nav-list-text"
-              matListItemTitle
-              *ngIf="isExpanded"
-            >
-              {{ menuItem.text }}
-            </p>
+            @if(isExpanded) {
+              <p
+                class="nav-list-text"
+                matListItemTitle
+              >
+                {{ menuItem.text }}
+              </p>
+            }
           </mat-list-item>
         }
       </mat-nav-list>
-      <div>
-        <div class="theme">
+      <mat-nav-list>
+        <div class="theme-toggle">
           <mat-icon>light_mode</mat-icon>
           <mat-slide-toggle (change)="toggleTheme($event)"></mat-slide-toggle>
           <mat-icon>dark_mode</mat-icon>
         </div>
-        <button mat-mini-fab (click)="isExpanded = !isExpanded" style="margin: 10px;">
-          <mat-icon aria-label="Menu">menu</mat-icon>
-        </button>
-      </div>
+        <div class="show-hide-container">
+          <button mat-mini-fab (click)="isExpanded = !isExpanded">
+            @if(!isExpanded) {
+              <mat-icon aria-label="Menu">visibility</mat-icon>
+            } @else {
+              <mat-icon aria-label="Menu">visibility_off</mat-icon>
+            }
+          </button>
+          @if(isExpanded) {
+            <span class="show-hide-text">Hide menu</span>
+          }
+        </div>
+      </mat-nav-list>
     </div>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar>
-      <span>Platform Lunch</span>
+    <mat-toolbar class="toolbar">
+      <div>Platform Lunch</div>
+      <div>
+        <button mat-flat-button color="primary">Add New Task</button>
+      </div>
     </mat-toolbar>
     <router-outlet />
   </mat-sidenav-content>
