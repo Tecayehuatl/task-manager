@@ -18,7 +18,7 @@
         </mat-card-header>
         <mat-card-content class="task-list">
           @for(info of boardItems[boardName].data; track info) {
-            <div class="task-item" cdkDrag>
+            <div class="task-item" cdkDrag style="border: 1px solid red;" (click)="openViewTaskDialog()">
               <app-task-item [task]="info"></app-task-item>
             </div>
           }

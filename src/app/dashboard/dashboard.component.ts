@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { TaskItemComponent } from '../shared/task-item/task-item.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ViewTaskComponent } from '../shared/view-task/view-task.component';
 
 export enum TaskStatus {
   BACKLOG = 'backlog',
@@ -100,7 +102,10 @@ export class DashboardComponent {
     },
   };
 
-  constructor(private store: Store) {
+  constructor(
+    private store: Store,
+    public dialog: MatDialog
+  ) {
     this.title$ = this.store.select(appNameSelector);
 
     setTimeout(() => {
@@ -133,5 +138,16 @@ export class DashboardComponent {
         event.currentIndex
       );
     }
+  }
+
+  openViewTaskDialog(): void {
+    const dialogRef = this.dialog.open(ViewTaskComponent, {
+      width: '450px',
+    });
+
+    dialogRef.afterClosed().subscribe((task: Task) => {
+      console.log('The dialog was closed');
+      console.log(task);
+    });
   }
 }

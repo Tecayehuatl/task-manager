@@ -1,0 +1,48 @@
+<mat-dialog-content>
+  <form [formGroup]="taskForm">
+    <pre>
+      {{ taskForm.value | json }}
+    </pre>
+    <section class="new-task">
+      <h6>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Saepe sapiente iste sit cumque modi deserunt obcaecati molestiae possimus tempora, odit reiciendis blanditiis accusamus delectus exercitationem, earum eos quod ratione distinctio?</h6>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis minima, cum, pariatur eaque reiciendis excepturi deleniti aut quas itaque ipsam sapiente exercitationem doloribus perferendis! Omnis eos autem animi incidunt aut.</p>
+    </section>
+    @if (subtasksControl.controls.length) {
+      <section class="subtasks" formArrayName="subtasks">
+        <div>
+          <h6>Subtasks (2 of 3)</h6>
+          @for(subtask of subtasksControl.controls; track $index) {
+            <div class="subtasks__item-container" [formGroupName]="$index">
+              <!-- <app-subtask [checkedVal]="true"></app-subtask> -->
+              <!-- <pre>
+                {{ isDone.value | json }}
+              </pre> -->
+              <mat-checkbox formControlName="isDone">
+                <!-- <span [class.strike-linethrough]="true">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti tempora odio temporibus! Aut facere harum, nobis iste ad veniam enim quibusdam, sed maxime nostrum distinctio. Ut dolore eum adipisci pariatur.
+                </span> -->
+                <!-- <span [appStrikeThrough]="true" [other]="'test'">
+
+                </span> -->
+                <span>
+                  <!-- {{ getSubtaskValueForm($index).value | json }} -->
+                  {{ getSubtaskValueForm($index)?.get('title')?.value | json }}
+                </span>
+              </mat-checkbox>
+            </div>
+          }
+        </div>
+      </section>
+    }
+    <section class="task-status">
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          @for(status of taskStatus | keyvalue; track $index) {
+            <mat-option [value]="status.value">{{ status.key }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </section>
+  </form>
+</mat-dialog-content>
