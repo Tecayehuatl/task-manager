@@ -46,7 +46,13 @@
     <mat-toolbar class="toolbar">
       <div>Platform Lunch</div>
       <div>
-        <button mat-flat-button color="primary">Add New Task</button>
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="openAddTaskDialog()"
+        >
+          Add New Task
+        </button>
       </div>
     </mat-toolbar>
     <div class="main">

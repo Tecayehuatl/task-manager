@@ -1,0 +1,28 @@
+mat-form-field {
+  width: 100%;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  margin-top: 10px;
+
+  &__button {
+    width: 100%;
+  }
+}
+
+.subtasks {
+  &__item-container {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__close {
+    margin-bottom: 20px;
+    margin-left: 10px;
+  }
+}

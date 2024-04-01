@@ -9,11 +9,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { TaskItemComponent } from '../shared/task-item/task-item.component';
 
-enum TaskStatus {
-  BACKLOG,
-  TODO,
-  DONE,
-  INREVIEW,
+export enum TaskStatus {
+  BACKLOG = 'backlog',
+  TODO = 'todo',
+  DONE = 'done',
+  INREVIEW = 'inreview',
 }
 
 export interface Task {

@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>Add New Task</h2>
+<mat-dialog-content>
+  <form [formGroup]="taskForm">
+    <section class="new-task">
+      <h6>Title</h6>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Title"
+          formControlName="title"
+        />
+      </mat-form-field>
+      <h6>Description</h6>
+      <mat-form-field>
+        <textarea
+          matInput
+          placeholder="Description of the task"
+          formControlName="description"
+        ></textarea>
+      </mat-form-field>
+    </section>
+    <section class="subtasks" formArrayName="subtasks">
+      <div>
+        <h6>Subtasks</h6>
+        @for(subtask of subtasksControl.controls; track $index) {
+          <div class="subtasks__item-container" [formGroupName]="$index">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Subtask title"
+                formControlName="title"
+              />
+            </mat-form-field>
+            <button
+              class="subtasks__close"
+              mat-button
+              type="button"
+              (click)="removeSubtask($index)"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+      <div class="actions">
+        <button
+          type="button"
+          class="actions__button"
+          mat-stroked-button
+          (click)="addSubtaskToForm()"
+        >
+          <mat-icon>add</mat-icon> <span>Add New Subtask</span>
+        </button>
+      </div>
+    </section>
+    <section class="task-status">
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          @for(status of subtaskStatus | keyvalue; track $index) {
+            <mat-option [value]="status.value">{{ status.key }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </section>
+    <mat-dialog-actions class="actions">
+      <button
+        class="actions__button"
+        color="primary"
+        mat-flat-button
+        [mat-dialog-close]="taskForm.value"
+        cdkFocusInitial
+        [disabled]="taskForm.invalid"
+      >
+        Create Task
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>
