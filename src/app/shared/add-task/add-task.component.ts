@@ -35,7 +35,8 @@ export enum SubTaskStatus {
 })
 export class AddTaskComponent implements OnInit {
   taskForm!: FormGroup;
-  subtaskStatus = TaskStatus;
+  taskStatus = TaskStatus;
+  subtaskStatus = SubTaskStatus;
 
   get subtasksControl(): FormArray {
     return this.taskForm.get('subtasks') as FormArray;

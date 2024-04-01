@@ -57,7 +57,7 @@
       <mat-form-field>
         <mat-label>Status</mat-label>
         <mat-select formControlName="status">
-          @for(status of subtaskStatus | keyvalue; track $index) {
+          @for(status of taskStatus | keyvalue; track $index) {
             <mat-option [value]="status.value">{{ status.key }}</mat-option>
           }
         </mat-select>
