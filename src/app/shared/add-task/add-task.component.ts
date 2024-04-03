@@ -7,12 +7,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/mat
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import { TaskStatus } from '../../dashboard/dashboard.component';
-
-export enum SubTaskStatus {
-  TODO = 'todo',
-  DONE = 'done'
-}
+import { Task, TaskStatus } from '../../dashboard/dashboard.component';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-add-task',
@@ -36,13 +32,15 @@ export enum SubTaskStatus {
 export class AddTaskComponent implements OnInit {
   taskForm!: FormGroup;
   taskStatus = TaskStatus;
-  subtaskStatus = SubTaskStatus;
 
   get subtasksControl(): FormArray {
     return this.taskForm.get('subtasks') as FormArray;
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private state: StateService,
+  ) {}
 
   ngOnInit(): void {
     this.createAddTaskForm();
@@ -60,7 +58,7 @@ export class AddTaskComponent implements OnInit {
   createSubtaskControl(): FormGroup {
     return this.fb.group({
       title: [null, Validators.required],
-      status: [this.subtaskStatus.TODO]
+      status: [this.taskStatus.TODO]
     });
   }
 
@@ -70,5 +68,16 @@ export class AddTaskComponent implements OnInit {
 
   removeSubtask(index: number): void {
      this.subtasksControl.removeAt(index);
+  }
+
+  createTask(task: Task): void {
+    if (this.taskForm.invalid)
+      return;
+
+    this.state.boardItems.map((board, index) => {
+      if(board.type === task.status) {
+        this.state.boardItems[index].tasks.push(task);
+      }
+    });
   }
 }
