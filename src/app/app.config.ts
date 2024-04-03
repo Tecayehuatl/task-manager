@@ -7,6 +7,7 @@ import { routes } from './app.routes';
 import { dashboardKey, dashboardReducer } from './store/reducers/dashboard.reducer';
 import { appReducer } from './store/reducers/app.reducer';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 export const appKey = 'AppState';
 
@@ -16,5 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideStore({ [dashboardKey]: dashboardReducer }),
     provideState({ name: appKey, reducer: appReducer }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), provideAnimationsAsync(),
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
 };
