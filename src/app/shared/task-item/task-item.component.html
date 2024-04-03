@@ -3,6 +3,8 @@
     <mat-card-subtitle>{{ task.title }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p>{{ task.subtask.length }}</p>
+    <p>
+      {{ totalSubTaskDone }} of {{ task.subtasks?.length }} subtasks
+    </p>
   </mat-card-content>
 </mat-card>
