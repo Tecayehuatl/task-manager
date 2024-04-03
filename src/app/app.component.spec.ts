@@ -1,11 +1,37 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { MatDialogRef } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [
+        BrowserAnimationsModule,
+        RouterModule,
+        AppComponent,
+      ],
+      providers: [
+        OverlayContainer,
+        {
+          provide: MatDialogRef,
+          useValue: {}
+        },
+        { provide: ActivatedRoute, useValue: {} }
+      ]
     }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {
@@ -14,16 +40,19 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'task-manager' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('task-manager');
-  });
+  it('should toggle theme properly', () => {
+    const overlayContainer = TestBed.inject(OverlayContainer);
+    const overlayContainerElement = overlayContainer.getContainerElement();
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, task-manager');
+    // First no theme class should be applied
+    expect(overlayContainerElement.classList.contains('theme-dark')).toBe(false);
+    expect(overlayContainerElement.classList.contains('theme-light')).toBe(false);
+
+    // Toggle to dark theme
+    const event: MatSlideToggleChange = { checked: true } as MatSlideToggleChange;
+    component.toggleTheme(event);
+
+    expect(overlayContainerElement.classList.contains('theme-dark')).toBe(true);
+    expect(overlayContainerElement.classList.contains('theme-light')).toBe(false);
   });
 });

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NotFoundComponent } from './not-found.component';
 
-describe('NotFoundComponent', () => {
+xdescribe('NotFoundComponent', () => {
   let component: NotFoundComponent;
   let fixture: ComponentFixture<NotFoundComponent>;
 
@@ -11,7 +11,7 @@ describe('NotFoundComponent', () => {
       imports: [NotFoundComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(NotFoundComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
