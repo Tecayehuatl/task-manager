@@ -1,39 +1,33 @@
-import { DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { appNameSelector } from '../store/selectors/app.selectors';
-import { greetAction } from '../store/actions/app.actions';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { TaskItemComponent } from '../shared/task-item/task-item.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewTaskComponent } from '../shared/view-task/view-task.component';
+import { StateService } from '../services/state.service';
 
 export enum TaskStatus {
   BACKLOG = 'backlog',
   TODO = 'todo',
   DONE = 'done',
-  INREVIEW = 'inreview',
+  INREVIEW = 'inReview',
 }
 
 export interface Task {
-  description: string;
+  description?: string;
   title: string;
   status: TaskStatus;
-  subtask: Task[];
+  subtasks?: Task[];
 }
 
-interface BoardItem {
+export interface BoardItem {
   color: string;
-  data: Task[];
+  tasks: Task[];
   name: string;
   type: string;
-}
-
-interface BoardItems {
-  [key: string]: BoardItem;
 }
 
 @Component({
@@ -51,79 +45,17 @@ interface BoardItems {
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  title = 'task-manager';
-  title$: any;
-  boardNames!: string[];
-
-  private initialTask: Task = {
-    title: '',
-    description: '',
-    status: TaskStatus.TODO,
-    subtask: [],
-  };
-
-  boardItems: BoardItems = {
-    backlog: {
-      color: '#6b5ed6',
-      type: 'backlog',
-      name: 'Backlog',
-      data: [
-        {
-          title: 'My first task',
-          description: 'Short Description',
-          status: TaskStatus.TODO,
-          subtask: [],
-        },
-        {
-          title: 'My first task',
-          description: 'Short Description',
-          status: TaskStatus.TODO,
-          subtask: [],
-        }
-      ],
-    },
-    todo: {
-      color: '#60c48c',
-      type: 'todo',
-      name: 'ToDo',
-      data: [],
-    },
-    done: {
-      color: '#df2b7d',
-      type: 'done',
-      name: 'Done',
-      data: [],
-    },
-    inReview: {
-      color: '#2359ba',
-      type: 'inReview',
-      name: 'In-Review',
-      data: [],
-    },
-  };
+  boardItems: BoardItem[];
 
   constructor(
-    private store: Store,
-    public dialog: MatDialog
+    private dialog: MatDialog,
+    private state: StateService,
   ) {
-    this.title$ = this.store.select(appNameSelector);
-
-    setTimeout(() => {
-      this.store.dispatch(greetAction({ title: 'Nuevo título' }));
-    }, 3000);
-    this.boardNames = this.getBoardNames();
+    this.boardItems = state.boardItems;
   }
 
-  getBoardNames(): string[] {
-    let names: string[] = [];
-    Object.keys(this.boardItems).forEach((board) => {
-      names = [...names, this.boardItems[board].type];
-    });
-    return names;
-  }
-
-  dragDropTask(event: any): void {
-    console.log('event', event);
+  dragDropTask(event: CdkDragDrop<Task[]>): void {
+    // TODO: Pending to move this to an independent service in order to be used by ngrx
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -138,16 +70,13 @@ export class DashboardComponent {
         event.currentIndex
       );
     }
+    this.state.boardItems = this.boardItems;
   }
 
-  openViewTaskDialog(): void {
-    const dialogRef = this.dialog.open(ViewTaskComponent, {
+  openViewTaskDialog(task: Task): void {
+    this.dialog.open(ViewTaskComponent, {
+      data: task,
       width: '450px',
-    });
-
-    dialogRef.afterClosed().subscribe((task: Task) => {
-      console.log('The dialog was closed');
-      console.log(task);
     });
   }
 }

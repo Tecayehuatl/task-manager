@@ -1,29 +1,33 @@
 <div class="container">
-  <div class="row" cdkDropListGroup>
-    @for(boardName of boardNames; track boardName) {
-      <mat-card
-        class="col"
-        cdkDropList
-        [cdkDropListData]="boardItems[boardName].data"
-        (cdkDropListDropped)="dragDropTask($event)"
-      >
-        <mat-card-header>
-          <mat-card-title>
-            <div class="card-title">
-              <span class="card-title__circle" [style.background-color]="boardItems[boardName].color"></span>
-              {{ boardItems[boardName].name | uppercase }}
-              ({{ boardItems[boardName].data.length }})
-            </div>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="task-list">
-          @for(info of boardItems[boardName].data; track info) {
-            <div class="task-item" cdkDrag style="border: 1px solid red;" (click)="openViewTaskDialog()">
-              <app-task-item [task]="info"></app-task-item>
-            </div>
-          }
-        </mat-card-content>
-      </mat-card>
-    }
-  </div>
+    <div class="row" cdkDropListGroup>
+      @for(pipe of boardItems; track pipe.type) {
+        <mat-card
+          class="col"
+          cdkDropList
+          [cdkDropListData]="pipe.tasks"
+          (cdkDropListDropped)="dragDropTask($event)"
+        >
+          <mat-card-header>
+            <mat-card-title>
+              <div class="card-title">
+                <span class="card-title__circle" [style.background-color]="pipe.color"></span>
+                {{ pipe.name | uppercase }}
+                ({{ pipe.tasks.length }})
+              </div>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="task-list">
+            @for(task of pipe.tasks; track $index) {
+              <div
+                class="task-item"
+                cdkDrag
+                (click)="openViewTaskDialog(task)"
+              >
+                <app-task-item [task]="task"></app-task-item>
+              </div>
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
 </div>
