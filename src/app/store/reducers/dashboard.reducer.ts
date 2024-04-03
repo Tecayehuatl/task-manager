@@ -1,26 +1,23 @@
 import { createReducer, on } from '@ngrx/store';
-import { setTitleAction } from '../actions/dashboard.actions';
+import { loadInitialData } from '../actions/dashboard.actions';
+import { BoardItem } from '../../dashboard/dashboard.component';
 
 export const dashboardKey = 'DashboardState';
 
 export interface Dashboard {
-  title: string;
+  boardItems: BoardItem[];
 }
 
 export const initialState: Dashboard = {
-  title: 'My dashboard',
+  // TODO: Set initial values here
+  boardItems: []
 };
-
-export interface DashboardState {
-  dashboardState: Dashboard;
-}
 
 export const dashboardReducer = createReducer(
   initialState,
-  on(setTitleAction, (state, { title }): Dashboard => {
+  on(loadInitialData, (state): Dashboard => {
     return {
       ...state,
-      title,
     };
-  })
+  }),
 );
