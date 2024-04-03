@@ -3,7 +3,10 @@
     <div class="mat-sidenav-side" [class.mat-sidenav-side--show]="isExpanded">
       <mat-nav-list>
         @for(menuItem of menuItems; track menuItem) {
-          <mat-list-item>
+          <mat-list-item
+            [routerLink]="menuItem.path"
+            routerLinkActive="router-link-active"
+          >
             <mat-icon
               matListItemIcon
             >

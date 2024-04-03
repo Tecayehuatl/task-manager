@@ -1,6 +1,6 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -10,7 +10,6 @@ import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskComponent } from './shared/add-task/add-task.component';
-import { Task } from './dashboard/dashboard.component';
 
 interface MenuItem {
   path: string;
@@ -27,6 +26,7 @@ interface MenuItem {
     MatIconModule,
     MatListModule,
     MatToolbarModule,
+    RouterModule,
     MatSlideToggleModule,
     MatButtonModule,
     OverlayModule,
@@ -39,24 +39,9 @@ export class AppComponent {
 
   menuItems: MenuItem[] = [
     {
-      path: '',
+      path: '/dashboard',
       icon: 'assignment',
-      text: 'Platform Lunch',
-    },
-    {
-      path: '',
-      icon: 'assignment',
-      text: 'Marketin Plan',
-    },
-    {
-      path: '',
-      icon: 'assignment',
-      text: 'Roadmap',
-    },
-    {
-      path: '',
-      icon: 'add',
-      text: 'Create New Board',
+      text: 'Dashboard',
     },
   ];
 
@@ -80,13 +65,6 @@ export class AppComponent {
   }
 
   openAddTaskDialog(): void {
-    const dialogRef = this.dialog.open(AddTaskComponent, {
-      width: '450px',
-    });
-
-    dialogRef.afterClosed().subscribe((task: Task) => {
-      console.log('The dialog was closed');
-      console.log(task);
-    });
+    this.dialog.open(AddTaskComponent, { width: '450px' });
   }
 }
